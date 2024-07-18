@@ -1,7 +1,10 @@
 package ru.cards.SpringCard.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -20,15 +23,36 @@ public class Card {
         MASTERCARD, VISA, MIR
     }
 
+    public enum Status{
+        CREATED, DELIVERED, RECEIVED
+    }
+
     @Enumerated(EnumType.STRING)
     private ProductType productType;
 
     @Enumerated(EnumType.STRING)
     private PaymentSystem paymentSystem;
 
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    @JsonIgnore
     private String panNumber;
-    private String status;
-    private String currentLocation;
+    @Transient
+    private String maskPanNumber;
+
+    @ManyToOne
+    private BankBranch currentLocation;
     @ManyToOne
     private Owner owner;
+
+
+//    public String setMaskPanNumber(String panNumber){
+//        maskPanNumber = panNumber.substring(0,6) + "******" + panNumber.substring(panNumber.length()-4);
+//        return maskPanNumber;
+//    }
+    public String getMaskPanNumber(){
+       return panNumber.substring(0,6) + "******" + panNumber.substring(panNumber.length()-4);
+   }
+
 }

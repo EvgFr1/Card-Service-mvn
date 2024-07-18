@@ -2,12 +2,14 @@ package ru.cards.SpringCard.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import ru.cards.SpringCard.dto.CardStatusAndHistoryDTO;
 import ru.cards.SpringCard.model.BankBranch;
 import ru.cards.SpringCard.model.Card;
 import ru.cards.SpringCard.model.CardMovement;
 import ru.cards.SpringCard.model.Owner;
-import ru.cards.SpringCard.repository.OwnerRepository;
 import ru.cards.SpringCard.service.BankService;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -35,16 +37,36 @@ public class BankController {
     }
 
     @PutMapping("/cards/move")
-    public Card moveCard(@RequestParam Long cardId, @RequestParam Long toBranchId){
+    public BankBranch moveCard(@RequestParam Long cardId, @RequestParam Long toBranchId){
         return bankService.moveCard(cardId,toBranchId);
         //return "Карта отправлена в другое банковское отделение";
     }
 
-    @PutMapping("cards/recive")
-    public Card reciveCard (@RequestParam Long cardId){
-        return bankService.reciveCard(cardId);
+    @PutMapping("/cards/receive")
+    public Card receiveCard(@RequestParam Long cardId){
+        return bankService.receiveCard(cardId);
 
     }
+
+    @GetMapping("/cards/{cardId}/history")
+    public List<CardMovement> getCardHistory(@PathVariable Long cardId) {
+        return bankService.getCardHistory(cardId);
+    }
+    @GetMapping("/cards/{cardId}/status")
+    public CardStatusAndHistoryDTO getCardStatus(@PathVariable Long cardId){
+        return bankService.getCardStatusAndHistory(cardId);
+    }
+
+
+////    @GetMapping("/cards/{cardId}/status")
+////    public Card getCardStatus(@PathVariable Long cardId){
+////        return bankService.getCardStatus(cardId);
+////    }
+//    @GetMapping("/cards/{cardId}/status")
+//    public Card.Status getCardStatus(@PathVariable Long cardId){
+//        return bankService.getCardStatus(cardId);
+//    }
+
 
 
 

@@ -1,21 +1,27 @@
 package ru.cards.SpringCard.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.*;
 
-@Entity
 @Data
+@Entity
 public class CardMovement {
     @Id
     @GeneratedValue
     private Long id;
+
     @ManyToOne
+    @JsonIgnore
     private Card card;
-    private String fromLocation;
-    private String toLocation;
+
+    @ManyToOne
+    private BankBranch fromLocation;
+
+    @ManyToOne
+    private BankBranch toLocation;
+
+
 
 
 
